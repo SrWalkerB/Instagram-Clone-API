@@ -1,3 +1,5 @@
+import "reflect-metadata";
+import "./database/connect";
 import dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
