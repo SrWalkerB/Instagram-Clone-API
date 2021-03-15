@@ -2,27 +2,28 @@ import bcrypt from 'bcrypt';
 import { getCustomRepository } from "typeorm";
 import { ICreateUser, ILoginUser } from "./auth_Interfaces";
 import UserRepository from "../../repositories/UserRepository";
+import generatedToken from '../../utils/generatedToken';
 
 class Auth_Service{
 
     async login_Account_Service(data: ILoginUser){
 
         const email = data.email;
-        const userRepository = await getCustomRepository(UserRepository);
-        const seacher_Mail = await userRepository.find({email});
+        const userRepository = await getCustomRepository(UserRepository).find({email});
 
-        if(seacher_Mail.length == 0){
+        if(userRepository.length == 0){
             return { err: "User not found" };
         }
 
-        const [{ password }] = seacher_Mail;
+        const [{ id, password }] = userRepository;
         const verificaPassword = bcrypt.compareSync(data.password, password);
 
         if(!verificaPassword){
             return { err: "User not found" };
         }
-        
-        return { msg: "Login" }
+
+        const token = generatedToken.generated_Token(id);
+        return { msg: token }
     }
 
     async create_Account_Service(data: ICreateUser){

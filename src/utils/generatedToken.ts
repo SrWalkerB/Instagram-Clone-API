@@ -1,0 +1,9 @@
+import jwt from "jsonwebtoken";
+
+export default new class Tokens{
+
+    generated_Token(data: string){
+
+        return jwt.sign({ id: data }, process.env.SECRET_KEY!, { expiresIn: "2h" })
+    }
+}
