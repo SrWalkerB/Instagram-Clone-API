@@ -23,7 +23,6 @@ class Auth_Service{
         })
 
         await userRepository.save(user);
-
         return { msg: user };
     }
 
