@@ -9,21 +9,21 @@ const generate = () => {
 
 test.only("Create user and delete", async () => {
 
-    const user01 = await axios.post("http://localhost:4530/auth", {
+    const user01 = await axios.post("http://localhost:4530/auth/create", {
         name: generate(),
         surname: generate(),
         email: `${generate()}@gmail.com`,
         password: generate()
     })
 
-    const user02 = await axios.post("http://localhost:4530/auth", {
+    const user02 = await axios.post("http://localhost:4530/auth/create", {
         name: generate(),
         surname: generate(),
         email: `${generate()}@gmail.com`,
         password: generate()
     })
 
-    const user03 = await axios.post("http://localhost:4530/auth", {
+    const user03 = await axios.post("http://localhost:4530/auth/create", {
         name: generate(),
         surname: generate(),
         email: `${generate()}@gmail.com`,
@@ -44,5 +44,5 @@ test.only("Create user and delete", async () => {
 
     expect(deleteUser01.data.msg).toBe("User Deletado");
     expect(deleteUser02.data.msg).toBe("User Deletado");
-    expect(deleteUser03.data.msg).toBe("User Deletado");
+    expect(deleteUser03.data.msg).toBe("User Deletado") 
 })
