@@ -7,7 +7,6 @@ const generate = () => {
     return crypto.randomBytes(10).toString("hex");
 }
 
-
 test.only("Create user and delete", async () => {
 
     const user01 = await axios.post("http://localhost:4530/auth", {

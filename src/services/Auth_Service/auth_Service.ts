@@ -1,9 +1,29 @@
-import { v4 as uuidv4 } from "uuid";
+import bcrypt from 'bcrypt';
 import { getCustomRepository } from "typeorm";
-import { ICreateUser } from "./auth_Interfaces";
+import { ICreateUser, ILoginUser } from "./auth_Interfaces";
 import UserRepository from "../../repositories/UserRepository";
 
 class Auth_Service{
+
+    async login_Account_Service(data: ILoginUser){
+
+        const email = data.email;
+        const userRepository = await getCustomRepository(UserRepository);
+        const seacher_Mail = await userRepository.find({email});
+
+        if(seacher_Mail.length == 0){
+            return { err: "User not found" };
+        }
+
+        const [{ password }] = seacher_Mail;
+        const verificaPassword = bcrypt.compareSync(data.password, password);
+
+        if(!verificaPassword){
+            return { err: "User not found" };
+        }
+        
+        return { msg: "Login" }
+    }
 
     async create_Account_Service(data: ICreateUser){
 

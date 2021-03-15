@@ -7,7 +7,12 @@ interface ICreateUser{
     password: string
 }
 
+interface ILoginUser{
+    email: string,
+    password: string
+}
 
 export {
-    ICreateUser
+    ICreateUser,
+    ILoginUser
 }
