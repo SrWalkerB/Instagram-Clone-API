@@ -32,6 +32,24 @@ class Users{
         this.password = bcrypt.hashSync(this.password, 12);
     }
 
+    @BeforeInsert()
+    @BeforeUpdate()
+    uuid(){
+        this.id = uuidv4();
+    }
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    atualized_Date_Create(){
+        this.atualized_at = new Date();
+    }
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    created_At_Date(){
+        this.created_at = new Date();
+    }
+
 }
 
 export default Users;
