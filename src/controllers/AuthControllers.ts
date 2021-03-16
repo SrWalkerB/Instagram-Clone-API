@@ -18,6 +18,7 @@ export default new class Auth_Controllers{
             }
 
             return Response.status(200).json({ msg: result.msg });
+            
         } catch (error) {
             
             console.log(error);

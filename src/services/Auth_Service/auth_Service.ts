@@ -3,6 +3,7 @@ import { getCustomRepository } from "typeorm";
 import { ICreateUser, ILoginUser } from "./auth_Interfaces";
 import UserRepository from "../../repositories/UserRepository";
 import generatedToken from '../../utils/generatedToken';
+import util from "util";
 
 class Auth_Service{
 
@@ -19,10 +20,10 @@ class Auth_Service{
         const verificaPassword = bcrypt.compareSync(data.password, password);
 
         if(!verificaPassword){
-            return { err: "User not found" };
+            return { err: "User not Found" }
         }
 
-        const token = generatedToken.generated_Token(id);
+        const token = generatedToken.generated_Token(id); 
         return { msg: token }
     }
 
