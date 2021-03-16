@@ -29,11 +29,12 @@ export default new class Auth_Controllers{
     async create_Account(Request: Request, Response: Response){
         
         try {
-            const { name, surname, email, password } = Request.body;
+            const { name, surname, username, email, password } = Request.body;
     
             const save = await auth_Service.create_Account_Service({
                 name: name,
                 surname: surname,
+                username: username,
                 email: email,
                 password: password
             });
