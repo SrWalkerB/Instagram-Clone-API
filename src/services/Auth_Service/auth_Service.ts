@@ -43,8 +43,7 @@ class Auth_Service{
         }
             
         const user = userRepository.create({
-            name: data.name,
-            surname: data.surname,
+            name_full: data.name_full,
             email: data.email,
             username: data.username,
             password: data.password

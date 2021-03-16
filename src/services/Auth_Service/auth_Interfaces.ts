@@ -1,8 +1,7 @@
 
 
 interface ICreateUser{
-    name: string,
-    surname: string,
+    name_full: string,
     username: string,
     email: string,
     password: string

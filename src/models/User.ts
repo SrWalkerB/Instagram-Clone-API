@@ -9,10 +9,7 @@ class Users{
     id: string;
 
     @Column()
-    name: string;
-
-    @Column()
-    surname: string;
+    name_full: string;
 
     @Column()
     username: string;

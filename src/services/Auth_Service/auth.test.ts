@@ -12,24 +12,21 @@ const generate = () => {
 test.only("Create user and delete", async () => {
 
     const user01 = await axios.post("http://localhost:4530/auth/create", {
-        name: generate(),
-        surname: generate(),
+        name_full: generate(),
         username: generate(),
         email: `${generate()}@gmail.com`,
         password: generate()
     })
 
     const user02 = await axios.post("http://localhost:4530/auth/create", {
-        name: generate(),
-        surname: generate(),
+        name_full: generate(),
         username: generate(),
         email: `${generate()}@gmail.com`,
         password: generate()
     })
 
     const user03 = await axios.post("http://localhost:4530/auth/create", {
-        name: generate(),
-        surname: generate(),
+        name_full: generate(),
         username: generate(),
         email: `${generate()}@gmail.com`,
         password: generate()
@@ -60,24 +57,21 @@ test.only("Test Login and Delete", async () => {
     const password_User03 = generate();
 
     const user01 = await axios.post('http://localhost:4530/auth/create', {
-        name: generate(),
-        surname: generate(),
+        name_full: generate(),
         username: generate(),
         email: `${generate()}gmail.com`,
         password: password_User01
     })
 
     const user02 = await axios.post('http://localhost:4530/auth/create', {
-        name: generate(),
-        surname: generate(),
+        name_full: generate(),
         username: generate(),
         email: `${generate()}gmail.com`,
         password: password_User02
     })
 
     const user03 = await axios.post('http://localhost:4530/auth/create', {
-        name: generate(),
-        surname: generate(),
+        name_full: generate(),
         username: generate(),
         email: `${generate()}gmail.com`,
         password: password_User03
