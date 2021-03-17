@@ -6,4 +6,9 @@ export default new class Tokens{
 
         return jwt.sign({ id: data }, process.env.SECRET_KEY!, { expiresIn: "2h" })
     }
+
+    decoded_token(token: string): object | any{
+
+        return jwt.verify(token, process.env.SECRET_KEY!);
+    }
 }
