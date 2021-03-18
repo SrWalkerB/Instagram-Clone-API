@@ -14,12 +14,12 @@ export class CreateUsers1615823367009 implements MigrationInterface {
                 {
                     name: "name_full",
                     type: "varchar",
-                    length: "20"
+                    length: "30"
                 },
                 {
                     name: "username",
                     type: "varchar",
-                    length: "20",
+                    length: "25",
                     isUnique: true
                 },
                 {
