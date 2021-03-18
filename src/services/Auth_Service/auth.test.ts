@@ -3,8 +3,6 @@ import { describe, expect, it, test } from "@jest/globals";
 import axios from "axios";
 import crypto from "crypto";
 
-
-
 const generate = () => {
     return crypto.randomBytes(10).toString("hex");
 }

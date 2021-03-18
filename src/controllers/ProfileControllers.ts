@@ -7,9 +7,7 @@ export default new class Profile_Controllers{
         try {
             
             const token = Request.header("token");
-
             const seacherUser = await profile_Service.seacher_User_Service(token!);
-
             const [{ id, name_full, username, email, created_at }] = seacherUser;
 
             const user = {
