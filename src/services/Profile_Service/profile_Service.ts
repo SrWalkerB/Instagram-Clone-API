@@ -14,4 +14,13 @@ export default new class Profile_Service{
 
         return userRepository;
     }
+
+    async seacher_following_Service(token: string){
+
+        const decoded = generatedToken.decoded_token(token);
+
+        console.log(decoded);
+
+        return decoded;
+    }
 }

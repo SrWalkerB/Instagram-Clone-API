@@ -26,4 +26,19 @@ export default new class Profile_Controllers{
             return Response.status(500).json({ err: error });
         }
     }
+
+    async seacher_Following(Request: Request, Response: Response){
+        try {
+            
+            const token = Request.header("token");
+            const seacher = await profile_Service.seacher_following_Service(token!);
+
+            return Response.status(200).json(seacher);
+
+        } catch (error) {
+            
+            console.log(error);
+            return Response.status(500).json({ err: error });
+        }
+    }
 }
