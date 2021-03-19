@@ -1,5 +1,5 @@
 import jsonwebtoken from "jsonwebtoken";
-import { getCustomRepository } from "typeorm"
+import { getCustomRepository, ILike } from "typeorm"
 import Follow_User_Repository from "../../repositories/FollowRepository";
 import UserRepository from "../../repositories/UserRepository"
 import generatedToken from "../../utils/generatedToken";
@@ -7,7 +7,7 @@ import generatedToken from "../../utils/generatedToken";
 
 export default new class Profile_Service{
 
-    async seacher_User_Service(token: string){
+    async seacher_User_Service_Token(token: string){
 
         const decoded = generatedToken.decoded_token(token);
         const { id } = decoded;        
@@ -23,5 +23,13 @@ export default new class Profile_Service{
         const followRepository = await getCustomRepository(Follow_User_Repository).find({id});
             
         return followRepository
+    }
+
+    async seacher_UserName_Service(username: string) {
+    
+        const userRepository = await getCustomRepository(UserRepository)
+        .find({username: ILike(`${username}%`)});
+
+        return userRepository;
     }
 }

@@ -8,6 +8,8 @@ profile_Routes.get("/profile", autenticate.autenticate, ProfileControllers.seach
 
 profile_Routes.get("/profile/following", autenticate.autenticate, ProfileControllers.seacher_Following);
 
+profile_Routes.get("/profile/:username", autenticate.autenticate, ProfileControllers.seacher_UserName);
+
 
 export default profile_Routes;
 
