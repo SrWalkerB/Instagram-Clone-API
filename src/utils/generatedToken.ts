@@ -8,7 +8,12 @@ export default new class Tokens{
     }
 
     decoded_token(token: string): object | any{
+        return jwt.verify(token, process.env.SECRET_KEY!, (err, decoded) => {
+            if(err){
+                return { err: "invalid token" };
+            }
 
-        return jwt.verify(token, process.env.SECRET_KEY!);
+            return decoded;
+        });
     }
 }

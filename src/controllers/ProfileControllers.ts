@@ -31,9 +31,10 @@ export default new class Profile_Controllers{
         try {
             
             const token = Request.header("token");
-            const seacher = await profile_Service.seacher_following_Service(token!);
-
-            return Response.status(200).json(seacher);
+            
+            const dataUser = await profile_Service.seacher_following_Service(token!);
+            
+            return Response.status(200).json(dataUser);
 
         } catch (error) {
             
