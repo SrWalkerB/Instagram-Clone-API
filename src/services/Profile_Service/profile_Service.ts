@@ -77,4 +77,28 @@ export default new class Profile_Service{
         return { msg: "Following"};
     }
 
+    async verify_follower_user_Service(token: string, id_following: string){
+
+        const decoded = generatedToken.decoded_token(token);
+        const { id } = decoded;
+        const userRepository = getCustomRepository(UserRepository);
+        const follow_repository = getCustomRepository(Follow_User_Repository);
+        
+        const userData = await userRepository.findOne(id); //Seguidor
+        const user_following = await userRepository.findOne({ id: id_following }); //Segue
+ 
+        if(!userData || !user_following){
+            return { err: "User not found" };
+        }
+
+        const result = await follow_repository.findOne({ id_user: id_following, id_follower: id})
+
+        if(!result){
+            return {msg: false};
+        }
+
+        return { msg: true };
+
+    }
+
 }

@@ -90,7 +90,28 @@ export default new class Profile_Controllers{
                 return Response.status(400).json({ err: resp.warning });
             }
 
-            return Response.status(200).json({msg: resp.msg});
+            return Response.status(201).json({msg: resp.msg});
+
+        } catch (error) {
+            
+            console.log(error);
+            return Response.status(500).json({ err: error });
+        }
+    }
+
+    async verify_follow(Request: Request, Response: Response){
+        try {
+            
+            const { id } = Request.params;
+            const token = Request.header("token");
+
+            const result = await profile_Service.verify_follower_user_Service(token!, id);
+
+            if(result.err){
+                return Response.status(404).json({ msg: result.err });
+            }
+
+            return Response.status(200).json({ msg: result.msg });
 
         } catch (error) {
             
