@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import crypto from "crypto";
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
 
 @Entity("follow_user")
@@ -8,19 +9,13 @@ class Follow_User{
     id: string;
 
     @Column()
-    id_follower: string;
+    id_user: string;
 
     @Column()
-    id_following: string
+    id_follower: string
 
     @CreateDateColumn()
     created_at: Date;
-
-    @BeforeInsert()
-    @BeforeUpdate()
-    uudi(){
-        this.id = uuidv4();
-    }
 }
 
 export default Follow_User;

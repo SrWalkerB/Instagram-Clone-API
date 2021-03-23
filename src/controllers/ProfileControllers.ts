@@ -27,11 +27,10 @@ export default new class Profile_Controllers{
         }
     }
 
-    async seacher_Following(Request: Request, Response: Response){
+    async seacher_following(Request: Request, Response: Response){
         try {
             
             const token = Request.header("token");
-            
             const dataUser = await profile_Service.seacher_following_Service(token!);
             
             return Response.status(200).json(dataUser);
@@ -50,6 +49,48 @@ export default new class Profile_Controllers{
             const result = await profile_Service.seacher_UserName_Service(username);
 
             return Response.status(200).json(result);
+
+        } catch (error) {
+            
+            console.log(error);
+            return Response.status(500).json({ err: error });
+        }
+    }
+
+    async seacher_Username_Exact(Request: Request, Response: Response){
+        try {
+            
+            const { username } = Request.params;
+            const userData = await profile_Service.secher_Username_Exact_Service(username);
+
+            if(userData.err){
+                return Response.status(404).json({ err: userData.err });
+            }
+
+            return Response.status(200).json(userData.msg);
+        } catch (error) {
+            
+            console.log(error);
+            return Response.status(500).json({ err: error });
+        }
+    }
+
+    async follow_user(Request: Request, Response: Response){
+        try {
+            
+            const token = Request.header("token");
+            const { id: id_folllower } = Request.params;
+            const resp = await profile_Service.follow_user_Service(token!, id_folllower);
+
+            if(resp.err){
+                return Response.status(404).json({ err: resp.err });
+            }
+
+            if(resp.warning){
+                return Response.status(400).json({ err: resp.warning });
+            }
+
+            return Response.status(200).json({msg: resp.msg});
 
         } catch (error) {
             

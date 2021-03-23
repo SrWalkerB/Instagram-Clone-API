@@ -1,4 +1,5 @@
-import jsonwebtoken from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
+import crypto from "crypto";
 import { getCustomRepository, ILike } from "typeorm"
 import Follow_User_Repository from "../../repositories/FollowRepository";
 import UserRepository from "../../repositories/UserRepository"
@@ -20,8 +21,8 @@ export default new class Profile_Service{
 
         const decoded = await generatedToken.decoded_token(token);
         const { id } = decoded
-        const followRepository = await getCustomRepository(Follow_User_Repository).find({id});
-            
+        const followRepository = await getCustomRepository(Follow_User_Repository).find({id_follower: id});
+        
         return followRepository
     }
 
@@ -32,4 +33,48 @@ export default new class Profile_Service{
 
         return userRepository;
     }
+
+    async secher_Username_Exact_Service(username: string){
+
+        const userRepository = await getCustomRepository(UserRepository).find({username});
+
+        if(userRepository.length == 0){
+            return { err: "Not Found" }
+        }
+
+        return {msg: userRepository};
+    }
+
+    async follow_user_Service(token: string, id_follow: string){
+
+        const decoded = generatedToken.decoded_token(token);
+        const { id } = decoded;
+
+        const follow_repository = await getCustomRepository(Follow_User_Repository);
+        const userData = await getCustomRepository(UserRepository).findOne({ id }); //Seguidor
+        const userFollowData = await getCustomRepository(UserRepository).findOne({ id: id_follow }); //Segue
+        const verify_Follow = await follow_repository.findOne({ id_user: userFollowData?.id, id_follower: id });
+        
+        if(!userFollowData || !userData){
+            return { err: "User not found" }
+        }
+        
+        if(verify_Follow){
+            return { warning: "already follow" }
+        }
+        
+        const generated = (bytes: number) => crypto.randomBytes(bytes).toString('hex');
+
+        const data = {
+            id: uuidv4() + generated(25),
+            id_user: userFollowData.id,
+            id_follower: id,
+            created_at: new Date()
+        }
+
+        await follow_repository.save(data);
+
+        return { msg: "Following"};
+    }
+
 }

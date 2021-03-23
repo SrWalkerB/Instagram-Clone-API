@@ -12,11 +12,11 @@ export class TableSeguindoUser1616102012539 implements MigrationInterface {
                     isPrimary: true
                 },
                 {
-                    name: "id_follower",
+                    name: "id_user",
                     type: "varchar"
                 },
                 {
-                    name: "id_following",
+                    name: "id_follower",
                     type: "varchar"
                 },
                 {
