@@ -16,6 +16,8 @@ profile_Routes.get("/profile/following/:id", Autenticate.autenticate, ProfileCon
 
 profile_Routes.post("/profile/follow/:id", Autenticate.autenticate, ProfileControllers.follow_user);
 
+profile_Routes.post("/profile/upload/", Autenticate.autenticate, ProfileControllers.upload_Photo);
+
 
 export default profile_Routes;
 

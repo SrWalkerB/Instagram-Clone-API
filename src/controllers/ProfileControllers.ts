@@ -8,17 +8,8 @@ export default new class Profile_Controllers{
             
             const token = Request.header("token");
             const seacherUser = await profile_Service.seacher_User_Service_Token(token!);
-            const [{ id, name_full, username, email, created_at }] = seacherUser;
 
-            const user = {
-                id: id,
-                name_full: name_full,
-                username: username,
-                email: email,
-                created_at: created_at
-            }
-
-            return Response.status(200).json(user);
+            return Response.status(200).json(seacherUser);
 
         } catch (error) {
             
@@ -104,7 +95,7 @@ export default new class Profile_Controllers{
             
             const { id } = Request.params;
             const token = Request.header("token");
-
+            
             const result = await profile_Service.verify_follower_user_Service(token!, id);
 
             if(result.err){
@@ -112,6 +103,20 @@ export default new class Profile_Controllers{
             }
 
             return Response.status(200).json({ msg: result.msg });
+
+        } catch (error) {
+            
+            console.log(error);
+            return Response.status(500).json({ err: error });
+        }
+    }
+
+    async upload_Photo(Request: Request, Response: Response){
+        try {
+            
+            
+
+            return Response.status(200).json({ msg: "Hello World" });
 
         } catch (error) {
             

@@ -13,8 +13,20 @@ export default new class Profile_Service{
         const decoded = generatedToken.decoded_token(token);
         const { id } = decoded;        
         const userRepository = await getCustomRepository(UserRepository).find({id});
+        const followRepository = await getCustomRepository(Follow_User_Repository).find({id_follower: id});
 
-        return userRepository;
+        const [{ name_full, username, email, created_at }] = userRepository;
+
+            const user = {
+                id: id,
+                name_full: name_full,
+                username: username,
+                email: email,
+                created_at: created_at,
+                following: followRepository
+            }
+
+        return user;
     }
 
     async seacher_following_Service(token: string){
@@ -91,9 +103,9 @@ export default new class Profile_Service{
             return { err: "User not found" };
         }
 
-        const result = await follow_repository.findOne({ id_user: id_following, id_follower: id})
+        const result = await follow_repository.find({ id_user: id_following, id_follower: id})
 
-        if(!result){
+        if(result.length == 0){
             return {msg: false};
         }
 
