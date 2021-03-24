@@ -45,16 +45,30 @@ export default new class Profile_Service{
     async seacher_UserName_Service(username: string) {
     
         const userRepository = await getCustomRepository(UserRepository)
-        .find({username: ILike(`${username}%`)});
+        .find({username: ILike(`${username}%`)}); 
+        
+        const [{ id }] = userRepository;
+        const follow_user = await getCustomRepository(Follow_User_Repository).find({  id_follower: id });
+        const photo_user = await getCustomRepository(Photo_Users_Repository).find({ id_user: id });
+        
+        const data = userRepository.map(result => {
+            return {
+                id: result.id,
+                name_full: result.name_full,
+                username: result.username,
+                follow_user: follow_user,
+                photo_user: photo_user
+            }
+        })
 
-        return userRepository;
+        return data;
     }
 
     async secher_Username_Exact_Service(username: string){
 
-        const userRepository = await getCustomRepository(UserRepository).find({username});
+        const userRepository = await getCustomRepository(UserRepository).findOne({username});
 
-        if(userRepository.length == 0){
+        if(!userRepository){
             return { err: "Not Found" }
         }
 

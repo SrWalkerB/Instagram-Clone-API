@@ -4,12 +4,12 @@ import crypto from "crypto";
 
 
 export default {
-    dest: path.resolve(__dirname, "..", "..", "..", "..", "Uploads"),
+    dest: path.resolve(__dirname, "..", "..", "uploads"),
 
     storage: multer.diskStorage({
 
         destination: (Request, file, cb) => {
-            cb(null, path.resolve(__dirname, "..", "..", "..", "..", "Uploads"))
+            cb(null, path.resolve(__dirname, "..", "..", "uploads"))
         },
 
         filename: (Request, file, cb) => {

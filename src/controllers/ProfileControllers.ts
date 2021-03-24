@@ -52,7 +52,9 @@ export default new class Profile_Controllers{
         try {
             
             const { username } = Request.params;
+
             const userData = await profile_Service.secher_Username_Exact_Service(username);
+            console.log(userData);
 
             if(userData.err){
                 return Response.status(404).json({ err: userData.err });
