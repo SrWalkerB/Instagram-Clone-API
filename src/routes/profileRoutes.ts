@@ -1,6 +1,8 @@
+import multer from "multer";
 import { Router } from "express";
 import ProfileControllers from "../controllers/ProfileControllers";
 import Autenticate from "./middlewares/Autenticate";
+import multer_config from "../config/multer_config";
 
 const profile_Routes = Router();
 
@@ -16,7 +18,7 @@ profile_Routes.get("/profile/following/:id", Autenticate.autenticate, ProfileCon
 
 profile_Routes.post("/profile/follow/:id", Autenticate.autenticate, ProfileControllers.follow_user);
 
-profile_Routes.post("/profile/upload/", Autenticate.autenticate, ProfileControllers.upload_Photo);
+profile_Routes.post("/profile/upload/", multer(multer_config).single("file"), Autenticate.autenticate, ProfileControllers.upload_Photo);
 
 
 export default profile_Routes;

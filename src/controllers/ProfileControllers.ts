@@ -114,7 +114,9 @@ export default new class Profile_Controllers{
     async upload_Photo(Request: Request, Response: Response){
         try {
             
-            
+            if(Request.file == undefined){
+                return Response.status(400).json({ err: "Format not suported" });
+            }
 
             return Response.status(200).json({ msg: "Hello World" });
 
