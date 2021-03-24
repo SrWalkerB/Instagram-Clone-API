@@ -16,6 +16,7 @@ export default new class Profile_Service{
         const { id } = decoded;        
         const userRepository = await getCustomRepository(UserRepository).find({id});
         const followRepository = await getCustomRepository(Follow_User_Repository).find({id_follower: id});
+        const photo_users = await getCustomRepository(Photo_Users_Repository).find({ id_user: id });
 
         const [{ name_full, username, email, created_at }] = userRepository;
 
@@ -25,7 +26,8 @@ export default new class Profile_Service{
                 username: username,
                 email: email,
                 created_at: created_at,
-                following: followRepository
+                following: followRepository,
+                photo_users: photo_users
             }
 
         return user;
