@@ -1,10 +1,17 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
 
 @Entity("photo_users")
 class Photo_Users{
 
     @PrimaryColumn()
     id_photo: string;
+
+    @Column()
+    id_user: string;
+
+    @Column()
+    profile: boolean;
 
     @Column()
     original_name: string

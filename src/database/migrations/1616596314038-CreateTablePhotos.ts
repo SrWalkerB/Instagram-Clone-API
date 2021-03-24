@@ -13,6 +13,14 @@ export class CreateTablePhotos1616596314038 implements MigrationInterface {
                     isUnique: true
                 },
                 {
+                    name: "id_user",
+                    type: "varchar",
+                },
+                {
+                    name: "profile",
+                    type:"boolean"
+                },
+                {
                     name: "original_name",
                     type: "varchar"
                 },

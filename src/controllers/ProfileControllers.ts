@@ -118,7 +118,16 @@ export default new class Profile_Controllers{
                 return Response.status(400).json({ err: "Format not suported" });
             }
 
-            return Response.status(200).json({ msg: "Hello World" });
+            const token = Request.header("token");
+            const { originalname, size, filename  } = Request.file;
+
+            const upload = await profile_Service.upload_Photo_Info({
+                original_name: originalname,
+                name_hash: filename,
+                size: `${size}`,
+            }, token!);
+
+            return Response.status(200).json(upload);
 
         } catch (error) {
             

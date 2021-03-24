@@ -4,6 +4,8 @@ import { getCustomRepository, ILike } from "typeorm"
 import Follow_User_Repository from "../../repositories/FollowRepository";
 import UserRepository from "../../repositories/UserRepository"
 import generatedToken from "../../utils/generatedToken";
+import IUploadImage from "./profile_Interfaces";
+import Photo_Users_Repository from "../../repositories/Photo_Users_Repository";
 
 
 export default new class Profile_Service{
@@ -111,6 +113,26 @@ export default new class Profile_Service{
 
         return { msg: true };
 
+    }
+
+    async upload_Photo_Info(data: IUploadImage, token: string){
+
+        const { id } = generatedToken.decoded_token(token);
+        const photo_user_Repository =  await getCustomRepository(Photo_Users_Repository);
+
+        const upload = {
+            id_photo: uuidv4() + crypto.randomBytes(25).toString("hex"),
+            id_user: id,
+            profile: false,
+            original_name: data.original_name,
+            name_hash: data.name_hash,
+            size: data.size,
+            url: `${process.env.HOST}/files/${data.name_hash}`
+        }
+
+        await photo_user_Repository.save(upload);
+
+        return upload;
     }
 
 }

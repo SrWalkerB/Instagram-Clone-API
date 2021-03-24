@@ -2,10 +2,12 @@ import "reflect-metadata";
 import "./database/connect";
 import dotenv from "dotenv";
 import cors from "cors";
+import path from "path";
 import express from "express";
 import login_Routes from "./routes/loginRoutes";
 import profile_Routes from "./routes/profileRoutes";
 import populatedRoute from "./routes/utils";
+import files from "./routes/files";
 dotenv.config();
 
 const app = express();
@@ -20,6 +22,8 @@ app.use(login_Routes);
 app.use(profile_Routes);
 
 app.use(populatedRoute);
+
+app.use(files);
 
 
 export default app;
