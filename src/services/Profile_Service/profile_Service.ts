@@ -35,6 +35,11 @@ export default new class Profile_Service{
         return user;
     }
 
+    async searcher_User_ID_Service(id: string){
+
+        return await getCustomRepository(UserRepository).find({id});
+    }
+
     async seacher_following_Service(token: string){
 
         const decoded = await generatedToken.decoded_token(token);
@@ -48,11 +53,15 @@ export default new class Profile_Service{
     
         const userRepository = await getCustomRepository(UserRepository)
         .find({username: ILike(`${username}%`)}); 
-        
-        const [{ id }] = userRepository;
-        const following_user = await getCustomRepository(Follow_User_Repository).find({  id_follower: id });
-        const photo_user = await getCustomRepository(Photo_Users_Repository).find({ id_user: id });
-        const followers = await getCustomRepository(Follow_User_Repository).find({id_user: id});
+        let id_user;
+
+        if(userRepository != undefined){
+
+            [{ id: id_user }] = userRepository;
+        }
+        const following_user = await getCustomRepository(Follow_User_Repository).find({  id_follower: id_user });
+        const photo_user = await getCustomRepository(Photo_Users_Repository).find({ id_user: id_user });
+        const followers = await getCustomRepository(Follow_User_Repository).find({id_user: id_user});
 
         
         const data = userRepository.map(result => {
@@ -144,5 +153,4 @@ export default new class Profile_Service{
 
         return upload;
     }
-
 }

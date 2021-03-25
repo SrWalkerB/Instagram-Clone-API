@@ -30,8 +30,6 @@ export default {
             "image/jpeg"
         ]
 
-        console.log(file);
-
         if(!allowMimes.includes(file.mimetype)){
 
             return cb(null, false);
