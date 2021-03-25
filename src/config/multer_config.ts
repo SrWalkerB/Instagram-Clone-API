@@ -4,11 +4,10 @@ import crypto from "crypto";
 
 
 export default {
-    dest: path.resolve(__dirname, "..", "..", "uploads"),
-
     storage: multer.diskStorage({
 
         destination: (Request, file, cb) => {
+            
             cb(null, path.resolve(__dirname, "..", "..", "uploads"))
         },
 
@@ -30,6 +29,8 @@ export default {
             "image/png",
             "image/jpeg"
         ]
+
+        console.log(file);
 
         if(!allowMimes.includes(file.mimetype)){
 

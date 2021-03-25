@@ -16,6 +16,7 @@ export default new class Profile_Service{
         const { id } = decoded;        
         const userRepository = await getCustomRepository(UserRepository).find({id});
         const followRepository = await getCustomRepository(Follow_User_Repository).find({id_follower: id});
+        const follow = await getCustomRepository(Follow_User_Repository).find({id_user: id});
         const photo_users = await getCustomRepository(Photo_Users_Repository).find({ id_user: id });
 
         const [{ name_full, username, email, created_at }] = userRepository;
@@ -27,6 +28,7 @@ export default new class Profile_Service{
                 email: email,
                 created_at: created_at,
                 following: followRepository,
+                follow: follow,
                 photo_users: photo_users
             }
 
@@ -48,31 +50,23 @@ export default new class Profile_Service{
         .find({username: ILike(`${username}%`)}); 
         
         const [{ id }] = userRepository;
-        const follow_user = await getCustomRepository(Follow_User_Repository).find({  id_follower: id });
+        const following_user = await getCustomRepository(Follow_User_Repository).find({  id_follower: id });
         const photo_user = await getCustomRepository(Photo_Users_Repository).find({ id_user: id });
+        const followers = await getCustomRepository(Follow_User_Repository).find({id_user: id});
+
         
         const data = userRepository.map(result => {
             return {
                 id: result.id,
                 name_full: result.name_full,
                 username: result.username,
-                follow_user: follow_user,
-                photo_user: photo_user
+                following_user: following_user,
+                photo_user: photo_user,
+                followers: followers
             }
         })
 
         return data;
-    }
-
-    async secher_Username_Exact_Service(username: string){
-
-        const userRepository = await getCustomRepository(UserRepository).findOne({username});
-
-        if(!userRepository){
-            return { err: "Not Found" }
-        }
-
-        return {msg: userRepository};
     }
 
     async follow_user_Service(token: string, id_follow: string){

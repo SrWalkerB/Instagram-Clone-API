@@ -48,26 +48,6 @@ export default new class Profile_Controllers{
         }
     }
 
-    async seacher_Username_Exact(Request: Request, Response: Response){
-        try {
-            
-            const { username } = Request.params;
-
-            const userData = await profile_Service.secher_Username_Exact_Service(username);
-            console.log(userData);
-
-            if(userData.err){
-                return Response.status(404).json({ err: userData.err });
-            }
-
-            return Response.status(200).json(userData.msg);
-        } catch (error) {
-            
-            console.log(error);
-            return Response.status(500).json({ err: error });
-        }
-    }
-
     async follow_user(Request: Request, Response: Response){
         try {
             
@@ -115,6 +95,8 @@ export default new class Profile_Controllers{
 
     async upload_Photo(Request: Request, Response: Response){
         try {
+
+            console.log(Request.file);
             
             if(Request.file == undefined){
                 return Response.status(400).json({ err: "Format not suported" });
