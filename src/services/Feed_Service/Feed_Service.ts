@@ -54,4 +54,12 @@ export default new class Feed_Service{
 
         return feed;
     }
+
+    async like_photo_Service(id_photo, token){
+
+        //Create Table_ photo_likes
+        //ID photo
+        //ID user_like
+        //created_At
+    }
 }
