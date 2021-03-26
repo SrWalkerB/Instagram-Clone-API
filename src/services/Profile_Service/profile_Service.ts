@@ -18,19 +18,24 @@ export default new class Profile_Service{
         const followRepository = await getCustomRepository(Follow_User_Repository).find({id_follower: id});
         const follow = await getCustomRepository(Follow_User_Repository).find({id_user: id});
         const photo_users = await getCustomRepository(Photo_Users_Repository).find({ id_user: id });
+        const photo_profile = await getCustomRepository(Photo_Users_Repository).find({ id_user: id, profile: true });
 
         const [{ name_full, username, email, created_at }] = userRepository;
-
-            const user = {
-                id: id,
-                name_full: name_full,
-                username: username,
-                email: email,
-                created_at: created_at,
-                following: followRepository,
-                follow: follow,
-                photo_users: photo_users
-            }
+        const [ data = "", ] = photo_profile;
+        
+        const user = {
+            id: id,
+            name_full: name_full,
+            username: username,
+            email: email,
+            created_at: created_at,
+            following: followRepository,
+            follow: follow,
+            photo_profile: {
+                data: data
+            },
+            photo_users: photo_users,
+        }
 
         return user;
     }
@@ -62,7 +67,9 @@ export default new class Profile_Service{
         const following_user = await getCustomRepository(Follow_User_Repository).find({  id_follower: id_user });
         const photo_user = await getCustomRepository(Photo_Users_Repository).find({ id_user: id_user });
         const followers = await getCustomRepository(Follow_User_Repository).find({id_user: id_user});
+        const photo_profile = await getCustomRepository(Photo_Users_Repository).find({ id_user: id_user, profile: true });
 
+        const [ dataProfile = "", ] = photo_profile;
         
         const data = userRepository.map(result => {
             return {
@@ -71,7 +78,8 @@ export default new class Profile_Service{
                 username: result.username,
                 following_user: following_user,
                 photo_user: photo_user,
-                followers: followers
+                followers: followers,
+                dataProfile: dataProfile
             }
         })
 
@@ -134,6 +142,22 @@ export default new class Profile_Service{
 
     }
 
+    async unfollow_user_Service(id_delete: string, token: string){
+
+        const { id } = generatedToken.decoded_token(token);
+        const verify_follow = await this.verify_follower_user_Service(token, id_delete);
+        const follow_repository = getCustomRepository(Follow_User_Repository);
+
+        if(!verify_follow.msg){
+            return { err: "User not found" }
+        }
+
+        const userInfo = await follow_repository.find({ id_user: id_delete, id_follower: id })        
+        await follow_repository.remove(userInfo);
+
+        return { msg: "unfollow" };
+    }
+
     async upload_Photo_Info(data: IUploadImage, token: string){
 
         const { id } = generatedToken.decoded_token(token);
@@ -152,5 +176,49 @@ export default new class Profile_Service{
         await photo_user_Repository.save(upload);
 
         return upload;
+    }
+
+    async upload_Photo_Profile(data: IUploadImage, token){
+
+        const { id } = generatedToken.decoded_token(token); 
+        const photo_Repository = getCustomRepository(Photo_Users_Repository);
+        const exPhoto_Profile = await photo_Repository.findOne({ id_user: id, profile: true });
+
+        if(!exPhoto_Profile){
+
+            const insert_Profile_Update = {
+                id_photo: uuidv4() + crypto.randomBytes(25).toString("hex"),
+                id_user: id,
+                profile: true,
+                original_name: data.original_name,
+                name_hash: data.name_hash,
+                size: data.size,
+                url: `${process.env.HOST}/files/${data.name_hash}`
+            }
+
+            await photo_Repository.save(insert_Profile_Update);
+        }
+
+        if(exPhoto_Profile){
+
+            exPhoto_Profile.profile = false;
+            await photo_Repository.save(exPhoto_Profile);
+            
+            //Criando uma nova foto
+            const insert_Profile_Update = {
+                id_photo: uuidv4() + crypto.randomBytes(25).toString("hex"),
+                id_user: id,
+                profile: true,
+                original_name: data.original_name,
+                name_hash: data.name_hash,
+                size: data.size,
+                url: `${process.env.HOST}/files/${data.name_hash}`
+            }
+
+            await photo_Repository.save(insert_Profile_Update);
+            
+        }
+
+        return { msg: 'update' };
     }
 }

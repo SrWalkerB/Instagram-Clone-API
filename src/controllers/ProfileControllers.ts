@@ -95,8 +95,6 @@ export default new class Profile_Controllers{
 
     async upload_Photo(Request: Request, Response: Response){
         try {
-
-            console.log(Request.file);
             
             if(Request.file == undefined){
                 return Response.status(400).json({ err: "Format not suported" });
@@ -112,6 +110,51 @@ export default new class Profile_Controllers{
             }, token!);
 
             return Response.status(200).json(upload);
+
+        } catch (error) {
+            
+            console.log(error);
+            return Response.status(500).json({ err: error });
+        }
+    }
+
+    async upload_Profile_Photo(Request: Request, Response: Response){
+        try {
+            
+            if(Request.file == undefined) {
+                return Response.status(400).json({ err: "Formated not suported" });
+            }
+
+            const { filename: name_hash, originalname, size } = Request.file;
+            const token = Request.header("token");
+
+            const upload = await profile_Service.upload_Photo_Profile({
+                size: `${size}`,
+                original_name: originalname,
+                name_hash: name_hash
+            }, token!);
+
+            return Response.status(200).json(upload.msg);
+
+        } catch (error) {
+            
+            console.log(error);
+            return Response.status(500).json({ err: error });
+        }
+    }
+
+    async unfollow_Service(Request: Request, Response: Response){
+        try {
+            
+            const token = Request.header('token');
+            const { id } = Request.params;
+            const del = await profile_Service.unfollow_user_Service(id, token!);
+
+            if(del.err){
+                return Response.status(404).json({ err: del.err });
+            }
+
+            return Response.status(200).json({ msg: del.msg });
 
         } catch (error) {
             

@@ -1,8 +1,6 @@
 import moment from "moment";
 import { getCustomRepository } from "typeorm";
-import Follow_User_Repository from "../../repositories/FollowRepository";
 import Photo_Users_Repository from "../../repositories/Photo_Users_Repository";
-import generatedToken from "../../utils/generatedToken";
 import profile_Service from "../Profile_Service/profile_Service";
 
 export default new class Feed_Service{
@@ -21,7 +19,10 @@ export default new class Feed_Service{
             .where("photo_users.id_user = :id_user", {id_user: followings[x].id_user} )
             .orderBy("photo_users.upload_At", "DESC").getMany();
 
-            const userData = await profile_Service.searcher_User_ID_Service(followings[x].id_user);    
+            const userData = await profile_Service.searcher_User_ID_Service(followings[x].id_user);
+            const photo_profile = await getCustomRepository(Photo_Users_Repository).find({ id_user: followings[x].id_user, profile: true }); 
+
+            const [ profilePhotos = "", ] = photo_profile;
             const [{ username }] = userData;
          
             for(let i=0; i < data.length; i++){
@@ -30,9 +31,11 @@ export default new class Feed_Service{
                     id_photo: data[i].id_photo,
                     username: username,
                     url: data[i].url,
-                    upload_At: moment(data[i].upload_At).calendar()
+                    upload_At: moment(data[i].upload_At).calendar(),
+                    profilePhotos: profilePhotos
                 })
             } 
+
         }
         
         function compare(a,b) {

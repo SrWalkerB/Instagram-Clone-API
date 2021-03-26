@@ -16,7 +16,11 @@ profile_Routes.get("/profile/following/:id", Autenticate.autenticate, ProfileCon
 
 profile_Routes.post("/profile/follow/:id", Autenticate.autenticate, ProfileControllers.follow_user);
 
-profile_Routes.post("/profile/upload/", multer(multer_config).single("file"), Autenticate.autenticate, ProfileControllers.upload_Photo);
+profile_Routes.post("/profile/upload/", Autenticate.autenticate, multer(multer_config).single("file"), ProfileControllers.upload_Photo);
+
+profile_Routes.put("/profile/upload/", Autenticate.autenticate, multer(multer_config).single("fileProfile"), ProfileControllers.upload_Profile_Photo);
+
+profile_Routes.delete("/profile/unfollow/:id", Autenticate.autenticate, ProfileControllers.unfollow_Service);
 
 
 export default profile_Routes;
