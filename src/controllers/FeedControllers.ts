@@ -17,4 +17,29 @@ export default new class Feed_Controllers{
             return Response.status(500).json({ err: error });
         }
     }
+
+    async like_photo(Request: Request, Response: Response){
+        try {
+            
+            const token = Request.header("token");
+            const { id } = Request.params;
+
+            const like = await Feed_Service.like_photo_Service(id, token);
+
+            if(like.err){
+                return Response.status(404).json({ err: like.err });
+            }
+
+            if(like.err_like){
+                return Response.status(400).json({ err: like.err_like });
+            }
+
+            return Response.status(200).json({ msg: like.msg })
+
+        } catch (error) {
+            
+            console.log(error);
+            return Response.status(500).json({ err: error });
+        }
+    }
 }

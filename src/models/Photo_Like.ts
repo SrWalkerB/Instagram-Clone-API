@@ -13,7 +13,7 @@ class Photo_Like{
     id_user: string;
 
     @CreateDateColumn()
-    created_At: string
+    created_At: Date
 }
 
 export default Photo_Like;
