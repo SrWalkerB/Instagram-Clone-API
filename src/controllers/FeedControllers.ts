@@ -31,7 +31,7 @@ export default new class Feed_Controllers{
             }
 
             if(like.err_like){
-                return Response.status(400).json({ err: like.err_like });
+                return Response.status(200).json({ err: like.err_like });
             }
 
             return Response.status(200).json({ msg: like.msg })
