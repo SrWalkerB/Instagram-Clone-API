@@ -33,13 +33,15 @@ export default new class Feed_Service{
             for(let i=0; i < data.length; i++){
 
                 const photo_like_elements = await photo_like.find({ id_photo: data[i].id_photo})
-                const data_formated = moment(data[i].upload_At).calendar()
+                const data_formated = moment(data[i].upload_At).calendar();
+                const like = await this.verify_Like_Photo_Service(data[i].id_photo, token);
 
                 feed.push({
                     id_photo: data[i].id_photo,
                     username: username,
                     url: data[i].url,
                     photo_like:photo_like_elements,
+                    like: like,
                     upload_At: data_formated,
                     profilePhotos: profilePhotos,
                 })
@@ -75,7 +77,10 @@ export default new class Feed_Service{
         }
 
         if(verify_like.length != 0){
-            return { err_like: "Have Like" }
+            
+            await photo_like_repository.remove(verify_like);
+
+            return { err_like: "Removed Like" }
         }
 
         const photo_like = {
@@ -88,5 +93,17 @@ export default new class Feed_Service{
         await photo_like_repository.save(photo_like)
 
         return { msg: "like" };
+    }
+
+    async verify_Like_Photo_Service(id_photo, token){
+
+        const { id } = generatedToken.decoded_token(token);
+        const photo_like_repository = await getCustomRepository(Photo_Like_Repository).find({ id_photo: id_photo, id_user: id });
+
+        if(photo_like_repository.length == 0){
+            return false;
+        }
+        
+        return true;
     }
 }

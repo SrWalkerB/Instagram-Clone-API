@@ -42,4 +42,21 @@ export default new class Feed_Controllers{
             return Response.status(500).json({ err: error });
         }
     }
+
+    async verify_like_photo(Request: Request, Response: Response){
+        try {
+            
+            const token = Request.header("token");
+            const { id } = Request.params;
+
+            const searcher = await Feed_Service.verify_Like_Photo_Service(id, token);
+        
+
+            return Response.status(200).json({ msg: searcher });
+        } catch (error) {
+            
+            console.log(error);
+            return Response.status(500).json({ err: error });
+        }
+    }
 }
