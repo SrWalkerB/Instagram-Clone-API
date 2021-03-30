@@ -60,8 +60,6 @@ export default new class Feed_Service{
         
         feed.sort(compare);
 
-        
-
         return feed;
     }
 

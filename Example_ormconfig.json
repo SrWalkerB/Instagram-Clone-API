@@ -1,0 +1,17 @@
+{
+    "type": "banco_de_dados",
+    "host": "host",
+    "port": 5432,
+    "username": "user do banco",
+    "password": "senha banco",
+    "database": "database",
+    "entities": [
+       "src/models/*.ts"
+    ],
+    "migrations": [
+       "src/database/migrations/*.ts"
+    ],
+    "cli": {
+        "migrationsDir": "src/database/migrations"
+    }
+ }

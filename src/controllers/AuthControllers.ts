@@ -51,23 +51,5 @@ export default new class Auth_Controllers{
         }
     }
 
-    async delete_Account(Request: Request, Response: Response){
-        try {
-            
-            const { id } = Request.params;
-
-            const del = await auth_Service.delete_Account_Service(id);
-
-            if(del.err){
-                return Response.status(404).json({ err: del.err });
-            }
-
-            return Response.status(200).json({ msg: del.msg });
-        } catch (error) {
-            
-            console.log(error);
-            return Response.status(500).json({ err: error });
-        }
-    }
 }
 

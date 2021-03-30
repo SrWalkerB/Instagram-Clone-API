@@ -52,19 +52,6 @@ class Auth_Service{
         await userRepository.save(user);
         return { msg: user };
     }
-
-    async delete_Account_Service(id: string){
-
-        const userRepository = getCustomRepository(UserRepository);
-        const seacher_ID = await userRepository.find({id});
-
-        if(seacher_ID.length == 0){
-            return { err: "User Not Found" };
-        }
-
-        await userRepository.delete({id: id});
-        return { msg: "User Deletado" };
-    }
 }
 
 export default new Auth_Service;
